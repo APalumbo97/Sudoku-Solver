@@ -1,15 +1,16 @@
 #include <cstdlib>
 #include <iostream>
 #include "Grid.h"
+#include "Backtracker.h"
 
 using namespace std;
 
 int main() {
     cout << "Hello World." << endl;
-    Grid a();
-    cout << "Created a grid on the stack." << endl;
+    Grid a = Grid();
+    a.printStuff('a');
     Grid *b = new Grid();
-    cout << "Created a grid on the heap." << endl;
+    b->printStuff('b');
     delete b;
     return EXIT_SUCCESS;
 }

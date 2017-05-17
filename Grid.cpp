@@ -13,3 +13,8 @@ Grid::~Grid() {
     }
     delete[] grid;
 }
+
+#include <iostream>
+void Grid::printStuff(char c) {
+    std::cout << "The letter is " << c << "." << std::endl;
+}

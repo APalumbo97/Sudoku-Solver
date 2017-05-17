@@ -9,6 +9,7 @@ class Grid {
     public:
         Grid();
         ~Grid();
+        void printStuff(char c);
 };
 
 #endif
