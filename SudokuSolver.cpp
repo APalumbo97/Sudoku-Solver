@@ -1,6 +1,13 @@
+/**
+ * @author Anthony Palumbo
+ * @version 1.0
+ * filename: SudokuSolver.cpp
+ * date: 6-3-2017
+ * description: Program that is able to solve sudoku puzzles that are given in a file
+ */
+
 #include <cstdlib>
 #include <iostream>
-#include "Grid.h"
 #include "Backtracker.h"
 
 using namespace std;
@@ -8,9 +15,9 @@ using namespace std;
 int main() {
     cout << "Hello World." << endl;
     Grid a = Grid();
-    a.printStuff('a');
     Grid *b = new Grid();
-    b->printStuff('b');
+    cout << a.toString() << endl;
+    cout << b->toString() << endl;
     delete b;
     return EXIT_SUCCESS;
 }
