@@ -13,10 +13,13 @@
 #include <list>
 
 #define SIZE 9
+#define SQUARES 3
 
 class Grid {
 private:
+    /// Stores the values of the sudoku grid.
     int **grid;
+    std::string rowString(int row);
 public:
     Grid();
     ~Grid();

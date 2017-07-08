@@ -8,6 +8,9 @@
 
 #include "Grid.h"
 
+/**
+ * Constructor for the Grid class.
+ */
 Grid::Grid() {
     grid = new int*[SIZE];
     for (int i = 0; i < SIZE; i++) {
@@ -15,6 +18,9 @@ Grid::Grid() {
     }
 }
 
+/**
+ * Destructor for the Grid class.
+ */
 Grid::~Grid() {
     for (int i = 0; i < SIZE; i++) {
         delete[] grid[i];
@@ -22,14 +28,31 @@ Grid::~Grid() {
     delete[] grid;
 }
 
+/**
+ * Getter for any value in the grid.
+ * @param row: the index of the row
+ * @param col: the index of the column
+ * @return: the value at the given row and column indexes
+ */
 int Grid::getValue(int row, int col) {
     return grid[row][col];
 }
 
+/**
+ * Setter for any value in the grid.
+ * @param row: the index of the row
+ * @param col: the index of the column
+ * @param value: the value to set at the given row and column
+ */
 void Grid::setValue(int row, int col, int value) {
     grid[row][col] = value;
 }
 
+/**
+ * Allocates dynamic memory for a new grid and copies over the contents.
+ * @param g: the old grid to be copied
+ * @return: a pointer to the new grid object
+ */
 Grid* Grid::copyGrid(Grid *g) {
     Grid *copy = new Grid();
     for (int r = 0; r < SIZE; r++) {
@@ -45,17 +68,111 @@ std::list<Grid*>* Grid::getSuccessors() {
     return new std::list<Grid*>();
 }
 
+/**
+ * Determines if the current configuration could be a possible solution.
+ * @return: true if it could be a solution, false if not
+ */
 bool Grid::isValid() {
-    // TODO
+    // Checks each row for a duplicate number.
+    for (int r = 0; r < SIZE; r++) {
+        bool nums[SIZE] = {false * SIZE};
+        for (int c = 0; c < SIZE; c++) {
+            if ((grid[r][c] > 0) && (!nums[grid[r][c] - 1])) {
+                nums[grid[r][c] - 1] = true;
+            } else if ((grid[r][c] > 0) && (nums[grid[r][c] - 1])) {
+                return false;
+            }
+        }
+    }
+
+    // Checks each column for a duplicate number.
+    for (int c = 0; c < SIZE; c++) {
+        bool nums[SIZE] = {false * SIZE};
+        for (int r = 0; r < SIZE; r++) {
+            if ((grid[r][c] > 0) && (!nums[grid[r][c] - 1])) {
+                nums[grid[r][c] - 1] = true;
+            } else if ((grid[r][c] > 0) && (nums[grid[r][c] - 1])) {
+                return false;
+            }
+        }
+    }
+
+    // Checks squares.
+    int val;
+    for (int sRow = 0; sRow < SQUARES; sRow++) {
+        for (int sCol = 0; sCol < SQUARES; sCol++) {
+            bool nums[SIZE] = {false * SIZE};
+            for (int r = 0; r < SQUARES; r++) {
+                for (int c = 0; c < SQUARES; c++) {
+                    val = grid[(sRow * 3) + r][(sCol * 3) + c];
+                    if ((val > 0) && (!nums[val - 1])) {
+                        nums[val - 1] = true;
+                    } else if ((val > 0) && (nums[val - 1])) {
+                        return false;
+                    }
+                }
+            }
+        }
+    }
+
     return true;
 }
 
+/**
+ * Determines if the current configuration is a solution or not.
+ * @return: true if it is a solution, false if not
+ */
 bool Grid::isGoal() {
-    // TODO
-    return false;
+    for (int r = 0; r < SIZE; r++) {
+        for (int c = 0; c < SIZE; c++) {
+            if (grid[r][c] <= 0 || grid[r][c] > 9) {
+                return false;
+            }
+        }
+    }
+
+    return isValid();
 }
 
+/**
+ * Creates a string for the given row.
+ * @param row: the index of the row to generate a string for
+ * @return: a string for that row
+ */
+std::string Grid::rowString(int row) {
+    std::string output = "";
+    int c;
+    for (c = 0; c < 3; c++) {
+        output += std::to_string(grid[row][c]) + " ";
+    }
+    output += "| ";
+    for (c = 3; c < 6; c++) {
+        output += std::to_string(getValue(row, c)) + " ";
+    }
+    output += "| ";
+    for (c = 6; c < SIZE; c++) {
+        output += std::to_string(getValue(row, c)) + " ";
+    }
+    return output;
+}
+
+/**
+ * Creates a string representation of the entire grid.
+ * @return: a string for the entire grid.
+ */
 std::string Grid::toString() {
-    // TODO
-    return "<string of grid";
+    std::string output = "";
+    int r;
+    for (r = 0; r < 3; r++) {
+        output += rowString(r) + "\n";
+    }
+    output += "---------------------\n";
+    for (r = 3; r < 6; r++) {
+        output += rowString(r) + "\n";
+    }
+    output += "---------------------\n";
+    for (r = 6; r < SIZE; r++) {
+        output += rowString(r) + "\n";
+    }
+    return output;
 }

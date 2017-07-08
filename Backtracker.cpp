@@ -11,5 +11,5 @@
 // TODO
 
 Grid* solve(Grid *g) {
-    return NULL;
+    return nullptr;
 }
