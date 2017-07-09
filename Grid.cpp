@@ -55,20 +55,19 @@ void Grid::setValue(int row, int col, int value) {
 
 /**
  * Allocates dynamic memory for a new grid and copies over the contents.
- * @param g: the old grid to be copied
  * @return: a pointer to the new grid object
  */
-Grid* Grid::copyGrid(Grid *g) {
+Grid* Grid::copyGrid() {
     Grid *copy = new Grid();
 
     for (int r = 0; r < SIZE; r++) {
         for (int c = 0; c < SIZE; c++) {
-            copy->setValue(r, c, g->getValue(r, c));
+            copy->setValue(r, c, grid[r][c]);
         }
     }
 
-    copy->currRow = g->currRow;
-    copy->currCol = g->currCol;
+    copy->currRow = currRow;
+    copy->currCol = currCol;
 
     return copy;
 }
@@ -81,18 +80,22 @@ std::list<Grid*>* Grid::getSuccessors() {
     std::list<Grid*> *successors = new std::list<Grid*>();
 
     if (canMove()) {
-        Grid *copy = copyGrid(this);
+        Grid *copy = copyGrid();
         copy->moveCursor();
         if (copy->getValue(currRow, currCol) != 0) {
             successors->push_back(copy);
             return successors;
+        } else {
+            delete copy;
         }
         for (int i = 0; i < SIZE; i++) {
-            copy = copyGrid(this);
+            copy = copyGrid();
             copy->moveCursor();
             copy->setValue(currRow, currCol, i + 1);
             if (copy->isValid()) {
                 successors->push_back(copy);
+            } else {
+                delete copy;
             }
         }
     }

@@ -57,6 +57,12 @@ public:
     ~Grid();
 
     /**
+     * Allocates dynamic memory for a new grid and copies over the contents.
+     * @return: a pointer to the new grid object
+     */
+    Grid* copyGrid();
+
+    /**
      * Getter for any value in the grid.
      * @param row: the index of the row
      * @param col: the index of the column
@@ -71,13 +77,6 @@ public:
      * @param value: the value to set at the given row and column
      */
     void setValue(int row, int col, int value);
-
-    /**
-     * Allocates dynamic memory for a new grid and copies over the contents.
-     * @param g: the old grid to be copied
-     * @return: a pointer to the new grid object
-     */
-    Grid* copyGrid(Grid *g);
 
     /**
      * Creates a list of successors by moving the cursor and setting the next value.
