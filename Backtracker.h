@@ -11,8 +11,11 @@
 
 #include "Grid.h"
 
-// TODO
-
+/**
+ * Solves the sudoku puzzle or returns a null if there is no solution.
+ * @param g: a pointer to the starting grid
+ * @return: a pointer to the solution
+ */
 Grid* solve(Grid *g);
 
 #endif

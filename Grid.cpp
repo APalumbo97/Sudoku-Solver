@@ -13,9 +13,13 @@
  */
 Grid::Grid() {
     grid = new int*[SIZE];
+
     for (int i = 0; i < SIZE; i++) {
         grid[i] = new int[SIZE];
     }
+
+    currRow = 0;
+    currCol = 0;
 }
 
 /**
@@ -25,6 +29,7 @@ Grid::~Grid() {
     for (int i = 0; i < SIZE; i++) {
         delete[] grid[i];
     }
+
     delete[] grid;
 }
 
@@ -55,17 +60,44 @@ void Grid::setValue(int row, int col, int value) {
  */
 Grid* Grid::copyGrid(Grid *g) {
     Grid *copy = new Grid();
+
     for (int r = 0; r < SIZE; r++) {
         for (int c = 0; c < SIZE; c++) {
             copy->setValue(r, c, g->getValue(r, c));
         }
     }
+
+    copy->currRow = g->currRow;
+    copy->currCol = g->currCol;
+
     return copy;
 }
 
+/**
+ * Creates a list of successors by moving the cursor and setting the next value.
+ * @return: a list of the successors
+ */
 std::list<Grid*>* Grid::getSuccessors() {
-    // TODO
-    return new std::list<Grid*>();
+    std::list<Grid*> *successors = new std::list<Grid*>();
+
+    if (canMove()) {
+        Grid *copy = copyGrid(this);
+        copy->moveCursor();
+        if (copy->getValue(currRow, currCol) != 0) {
+            successors->push_back(copy);
+            return successors;
+        }
+        for (int i = 0; i < SIZE; i++) {
+            copy = copyGrid(this);
+            copy->moveCursor();
+            copy->setValue(currRow, currCol, i + 1);
+            if (copy->isValid()) {
+                successors->push_back(copy);
+            }
+        }
+    }
+
+    return successors;
 }
 
 /**
@@ -135,6 +167,37 @@ bool Grid::isGoal() {
 }
 
 /**
+ * Determines if the cursor can be advanced a position or not.
+ * @return: true if the cursor can be moved, false if it is at the last position of the board
+ */
+bool Grid::canMove() {
+    return !((currRow == SIZE - 1) && (currCol == SIZE));
+}
+
+/**
+ * Moves the cursor to the next position if it is not at the last position of the board.
+ * @return: true if the cursor was moved, false if it cannot be moved
+ */
+bool Grid::moveCursor() {
+    if (!canMove()) {
+        return false;
+    } else {
+        if (currCol != SIZE - 1) {
+            currCol++;
+            return true;
+        } else {
+            currCol = 0;
+            if (currRow == SIZE - 1) {
+                return false;
+            } else {
+                currRow++;
+                return true;
+            }
+        }
+    }
+}
+
+/**
  * Creates a string for the given row.
  * @param row: the index of the row to generate a string for
  * @return: a string for that row
@@ -142,17 +205,21 @@ bool Grid::isGoal() {
 std::string Grid::rowString(int row) {
     std::string output = "";
     int c;
+
     for (c = 0; c < 3; c++) {
         output += std::to_string(grid[row][c]) + " ";
     }
     output += "| ";
+
     for (c = 3; c < 6; c++) {
         output += std::to_string(getValue(row, c)) + " ";
     }
     output += "| ";
+
     for (c = 6; c < SIZE; c++) {
         output += std::to_string(getValue(row, c)) + " ";
     }
+
     return output;
 }
 
@@ -162,17 +229,25 @@ std::string Grid::rowString(int row) {
  */
 std::string Grid::toString() {
     std::string output = "";
+
+    // TODO remove this
+    output += std::to_string(currRow) + "," + std::to_string(currCol) + "\n";
+
     int r;
+
     for (r = 0; r < 3; r++) {
         output += rowString(r) + "\n";
     }
     output += "---------------------\n";
+
     for (r = 3; r < 6; r++) {
         output += rowString(r) + "\n";
     }
     output += "---------------------\n";
+
     for (r = 6; r < SIZE; r++) {
         output += rowString(r) + "\n";
     }
+
     return output;
 }
