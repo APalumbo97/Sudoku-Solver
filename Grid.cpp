@@ -236,17 +236,29 @@ std::string Grid::rowString(int row) {
     int c;
 
     for (c = 0; c < 3; c++) {
-        output += std::to_string(grid[row][c]) + " ";
+        if (grid[row][c] == 0) {
+            output += "? ";
+        } else {
+            output += std::to_string(grid[row][c]) + " ";
+        }
     }
     output += "| ";
 
     for (c = 3; c < 6; c++) {
-        output += std::to_string(getValue(row, c)) + " ";
+        if (grid[row][c] == 0) {
+            output += "? ";
+        } else {
+            output += std::to_string(grid[row][c]) + " ";
+        }
     }
     output += "| ";
 
     for (c = 6; c < SIZE; c++) {
-        output += std::to_string(getValue(row, c)) + " ";
+        if (grid[row][c] == 0) {
+            output += "? ";
+        } else {
+            output += std::to_string(grid[row][c]) + " ";
+        }
     }
 
     return output;
