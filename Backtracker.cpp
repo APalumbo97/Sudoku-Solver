@@ -13,11 +13,8 @@
  * @param lst: the pointer to the list to be cleared
  */
 static void clearList(std::list<Grid*> *lst) {
-    std::list<Grid*>::iterator it;
-    for (unsigned int i = 0; i < lst->size(); i++) {
-        it = lst->begin();
-        std::advance(it, i);
-        delete *it;
+    for (Grid *ptr : *lst) {
+        delete ptr;
     }
     delete lst;
 }
@@ -40,11 +37,25 @@ Grid* solve(Grid *g) {
         std::advance(it, i);
 
         if ((*it)->isValid()) {
-            Grid *solution = solve(*it);
-            if (solution != nullptr) {
-                solution = solution->copyGrid();
+            Grid *solCpy;
+
+            if ((*it)->isGoal()) {
+                solCpy = (*it)->copyGrid();
                 clearList(successors);
-                return solution;
+                return solCpy;
+            }
+
+            Grid *solution = solve(*it);
+
+            if (solution != nullptr) {
+                Grid *solCpy = solution->copyGrid();
+                clearList(successors);
+
+                // if (solution != *it) {
+                //     delete solution;
+                // }
+
+                return solCpy;
             }
         }
     }

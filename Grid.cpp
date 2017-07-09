@@ -34,6 +34,25 @@ Grid::~Grid() {
 }
 
 /**
+ * Allocates dynamic memory for a new grid and copies over the contents.
+ * @return: a pointer to the new grid object
+ */
+Grid* Grid::copyGrid() {
+    Grid *copy = new Grid();
+
+    for (int r = 0; r < SIZE; r++) {
+        for (int c = 0; c < SIZE; c++) {
+            copy->setValue(r, c, grid[r][c]);
+        }
+    }
+
+    copy->currRow = currRow;
+    copy->currCol = currCol;
+
+    return copy;
+}
+
+/**
  * Getter for any value in the grid.
  * @param row: the index of the row
  * @param col: the index of the column
@@ -51,25 +70,6 @@ int Grid::getValue(int row, int col) {
  */
 void Grid::setValue(int row, int col, int value) {
     grid[row][col] = value;
-}
-
-/**
- * Allocates dynamic memory for a new grid and copies over the contents.
- * @return: a pointer to the new grid object
- */
-Grid* Grid::copyGrid() {
-    Grid *copy = new Grid();
-
-    for (int r = 0; r < SIZE; r++) {
-        for (int c = 0; c < SIZE; c++) {
-            copy->setValue(r, c, grid[r][c]);
-        }
-    }
-
-    copy->currRow = currRow;
-    copy->currCol = currCol;
-
-    return copy;
 }
 
 /**
@@ -170,6 +170,32 @@ bool Grid::isGoal() {
 }
 
 /**
+ * Creates a string representation of the entire grid.
+ * @return: a string for the entire grid.
+ */
+std::string Grid::toString() {
+    std::string output = "";
+
+    int r;
+
+    for (r = 0; r < 3; r++) {
+        output += rowString(r) + "\n";
+    }
+    output += "---------------------\n";
+
+    for (r = 3; r < 6; r++) {
+        output += rowString(r) + "\n";
+    }
+    output += "---------------------\n";
+
+    for (r = 6; r < SIZE; r++) {
+        output += rowString(r) + "\n";
+    }
+
+    return output;
+}
+
+/**
  * Determines if the cursor can be advanced a position or not.
  * @return: true if the cursor can be moved, false if it is at the last position of the board
  */
@@ -221,35 +247,6 @@ std::string Grid::rowString(int row) {
 
     for (c = 6; c < SIZE; c++) {
         output += std::to_string(getValue(row, c)) + " ";
-    }
-
-    return output;
-}
-
-/**
- * Creates a string representation of the entire grid.
- * @return: a string for the entire grid.
- */
-std::string Grid::toString() {
-    std::string output = "";
-
-    // TODO remove this
-    output += std::to_string(currRow) + "," + std::to_string(currCol) + "\n";
-
-    int r;
-
-    for (r = 0; r < 3; r++) {
-        output += rowString(r) + "\n";
-    }
-    output += "---------------------\n";
-
-    for (r = 3; r < 6; r++) {
-        output += rowString(r) + "\n";
-    }
-    output += "---------------------\n";
-
-    for (r = 6; r < SIZE; r++) {
-        output += rowString(r) + "\n";
     }
 
     return output;

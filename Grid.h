@@ -26,13 +26,6 @@ private:
     int currCol;
 
     /**
-     * Creates a string for the given row.
-     * @param row: the index of the row to generate a string for
-     * @return: a string for that row
-     */
-    std::string rowString(int row);
-
-    /**
      * Determines if the cursor can be advanced a position or not.
      * @return: true if the cursor can be moved, false if it is at the last position of the board
      */
@@ -43,6 +36,13 @@ private:
      * @return: true if the cursor was moved, false if it cannot be moved
      */
     bool moveCursor();
+
+    /**
+     * Creates a string for the given row.
+     * @param row: the index of the row to generate a string for
+     * @return: a string for that row
+     */
+    std::string rowString(int row);
 
 public:
 
