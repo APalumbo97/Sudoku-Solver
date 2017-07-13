@@ -48,12 +48,8 @@ Grid* solve(Grid *g) {
             Grid *solution = solve(*it);
 
             if (solution != nullptr) {
-                Grid *solCpy = solution->copyGrid();
+                solCpy = solution->copyGrid();
                 clearList(successors);
-
-                // if (solution != *it) {
-                //     delete solution;
-                // }
 
                 return solCpy;
             }
