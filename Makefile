@@ -2,7 +2,7 @@
 # Author: Anthony Palumbo
 
 CXX = g++
-CXXFLAGS = -std=c++11 -Wall -Wextra -pedantic
+CXXFLAGS = -std=c++11 -Wall -Wextra -pedantic -O3
 
 CPP_FILES = Sudoku-Solver.cpp Grid.cpp Backtracker.cpp
 H_FILES = Grid.h Backtracker.h
